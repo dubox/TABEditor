@@ -37,3 +37,8 @@ a,
     padding: 0 2rem;
   }
 } */
+
+
+[contenteditable]:focus {
+  outline-color: rgb(0, 211, 141);
+}

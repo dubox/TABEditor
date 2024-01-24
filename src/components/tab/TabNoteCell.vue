@@ -15,7 +15,7 @@ function onClick(e:MouseEvent){
 
 <template>
 
-  <div class=" w-full" :style="{'height':lineHeight+'px'}" @click="onClick" >2</div>
+  <div contenteditable="true" tabindex="3" class="cell w-full text-center" :style="{'height':lineHeight+'px'}" @click="onClick" >2</div>
 
   
 </template>

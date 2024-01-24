@@ -6,9 +6,9 @@ import TabNote from '../tab/TabNote.vue';
 import TabBarLine from '../tab/TabBarLine.vue';
 const props = defineProps();
 
-function onClick(e,attrs){
-  console.log(attrs.lineName)
-}
+// function onClick(e,attrs){
+//   console.log(attrs.lineName)
+// }
 // provide('Page', attrs);
 </script>
 
@@ -16,7 +16,7 @@ function onClick(e,attrs){
   <div class=" relative">
     <div class="header relative grid grid-cols-12">
       <div class=" col-span-full justify-self-center"><span class=" text-center text-3xl">橄榄树</span></div>
-      <div class=" col-span-full justify-self-center "><span class=" text-center text-xl">橄榄树</span></div>
+      <div class=" col-span-full justify-self-center "><span class=" text-center text-xl">橄榄</span></div>
       <div class=" col-span-full justify-self-end"><span class=" text-center text-sm">作曲：张三</span></div>
 
     </div>

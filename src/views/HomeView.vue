@@ -6,5 +6,5 @@ import Page from '@/components/Page.vue';
 
 <template>
   <Page class=""></Page>
-    
+    asdasd
 </template>
