@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref,inject, getCurrentInstance, computed } from 'vue';
-import Line from '../base/Line.vue';
+import LineH from '../base/LineH.vue';
 import type { PageProvider } from '@/common/types';
 
 // const $this = getCurrentInstance();
@@ -19,7 +19,7 @@ const lines = ref(['a','b','c','d','e','f']);
 
 <template>
   <div class=" w-full grid grid-cols-1">
-    <Line v-for="(name,key) in lines" :lineKey="key" :lineName="name" :lineHeight="lineHeight" :onClick="onClick" />
+    <LineH v-for="(name,key) in lines" :lineKey="key" :lineName="name" :lineWidth="1" color="#ddd" :height="lineHeight" :onClick="onClick" />
   </div>
 </template>
 

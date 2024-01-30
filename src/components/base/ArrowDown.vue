@@ -16,9 +16,8 @@ function onClick(e:MouseEvent){
 
 <template>
   <!-- <rect :y="y" height="10" :width="width" @click="onClick" class="fill-white" ></rect> -->
-  <svg :height="lineHeight" class=" w-full" @click="onClick">
-    <line class="stroke-1 stroke-black"  x1="0" :y1="lineHeight/2" :x2="width" :y2="lineHeight/2"></line>
-  </svg>
+  <svg>
+    <path d="M0,0 6,8 12,0  Q6,4 0,0" fill="black" stroke-width="0" stroke="black"></path></svg>
 </template>
 
 <style scoped>
