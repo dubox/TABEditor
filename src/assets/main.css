@@ -41,4 +41,6 @@ a,
 
 [contenteditable]:focus {
   outline-color: rgb(0, 211, 141);
+  outline-width: 1.5px;
+  outline-style: solid;
 }

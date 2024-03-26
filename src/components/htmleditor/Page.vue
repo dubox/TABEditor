@@ -1,82 +1,83 @@
 <script setup lang="ts">
-import { ref, provide, computed } from 'vue';
+import { ref, provide, computed, reactive, onMounted } from 'vue';
+
 import PageHead from './PageHead.vue';
 import TabRowBg from '../tab/TabRowBg.vue';
-import TabNote from '../tab/TabNote.vue';
+import Chord from '../tab/Chord.vue';
+import JianNote from '../jian/JianNote.vue';
+import LyricNote from '../lyric/LyricNote.vue';
 import TabNoteVCenter from '../tab/TabNoteVCenter.vue';
-import TabBarLine from '../tab/TabBarLine.vue';
 import Arc from '../base/Arc.vue';
+import TrackCell from '../base/TrackCell.vue';
 const props = defineProps();
 const model = defineModel();
-const data = {
-  head:{},
-  body:{
-    tabRows:[
-      [
-        {
-          noteHead:{a:'1',b:'',c:'',d:'3',e:'',f:''},
-          duration:32,
-        },
-        {
-          noteHead:{a:'',b:'',c:'2',d:'3',e:'',f:''},
-          duration:16,
-        },
-        {
-          noteHead:{a:'',b:'',c:'',d:'',e:'',f:'4'},
-          duration:8,
-        },
-      ],
-    ],
-    jianRows:[],
-    lyricRows:[],
-  },
-};
-
-function onClick(e:Event){
+import { useScoreStore } from '@/stores/score';
+import Paper from '../Paper.vue';
+const score = useScoreStore();
+score.init();
+const data = score.data;
+const body = data.body;
+const paper = body.conf.paper;
+function onClick2(e: Event) {
+  console.log('onClick2')
+  // data.body.rows[0][0].cells[0] = data.body.rows[0][0].cells[1];
+  data.head.title = '哈哈哈';
+  // data.body.rows.splice(0,1);
+  score.$patch((state) => {
+    // state.data.body.rows.splice(0,1);
+    // state.data.body.rows = state.data.body.rows.filter((item, i)=>{return i!=0;})
+  })
   console.log(data)
 }
-// provide('Page', attrs);
+
+onMounted(() => {
+  console.log('Page onMounted');
+
+})
+
+
+
+/**
+ * 简六时值对应：选中一个音符 另一边对应时值位的音符高亮
+ * 
+ * 
+ */
+
+
 </script>
 
 <template>
-  <div class=" relative">
-    <div class="header relative grid grid-cols-12">
-      <div class=" col-span-full justify-self-center"><span class=" text-center text-3xl">Test</span></div>
-      <div class=" col-span-full justify-self-center "><span class=" text-center text-xl">test</span></div>
-      <div class=" col-span-full justify-self-end"><span class=" text-center text-sm">XX：xxx</span></div>
-
-    </div>
-    <div class="body  grid grid-cols-12">
-      <div class="row-group grid-cols-12 col-span-full" @click="onClick">
-        <div class="row-chord grid-cols-12">
-          
-        </div>
-        <div v-for="(row,i) in data.body.tabRows" class=" row-tab relative flex col-span-full">
-          <TabRowBg class=" absolute top-0 left-0 -z-10 w-full" :lineHeight="10"  :onClick="onClick"></TabRowBg>
-          <TabBarLine :width="2" :lineHeight="10"></TabBarLine>
-          <TabNote v-for="(note ,ii) in row" v-model="data.body.tabRows[i][ii]" :lineHeight="10" ></TabNote>
-          <!-- <TabNote :lineHeight="10" >
-            <Arc :width="25" :dv="1" class=" absolute bottom-full right-1/2"></Arc>
-            <Arc :width="65" :dv="1" class=" absolute bottom-full right-1/2"></Arc>
-            <Arc :width="125" :dv="1" class=" absolute bottom-full right-1/2"></Arc>
-          </TabNote> -->
-          <TabNoteVCenter value="1"></TabNoteVCenter>
-          <TabNoteVCenter value="dot"></TabNoteVCenter>
-          <TabNoteVCenter value="rest4"></TabNoteVCenter>
-          <TabNoteVCenter value="rest8"></TabNoteVCenter>
-          <TabNoteVCenter value="rest16"></TabNoteVCenter>
-          <TabNoteVCenter value="rest32"></TabNoteVCenter>
-        </div>
-        <div class="row-jian grid-cols-12">
+  <div class="viewport overflow-scroll self-center h-full w-full" >
+  <div class="papers flex flex-col w-fit gap-4 items-center px-2 py-12" :style="`margin:0px auto;`">
+    <Paper :width="paper.width" :height="paper.height" :padding-x="paper.paddingX" :padding-y="paper.paddingY">
+      
+        <div class="header relative grid grid-cols-12">
+          <div class=" col-span-full justify-self-center"><span class=" text-center text-3xl">{{ data.head.title}}</span></div>
+          <div class=" col-span-full justify-self-center "><span class=" text-center text-xl">test</span></div>
+          <div class=" col-span-full justify-self-end"><span class=" text-center text-sm">XX：xxx</span></div>
 
         </div>
-        <div class="row-lyric grid-cols-12">
-
+        <div class="body ">
+          <div class="row-group">
+            <div v-for="(row, i) in body.rows" :key="i" class="row relative w-full mb-2">
+              <div v-for="(track, ii) in row" :key="ii" class=" flex">
+                <div :class="`track ${track.type == 'tab' && 'mb-6 mt-20'} relative flex w-full items-center pl-2`">
+                  <TabRowBg v-if="track.type == 'tab'" class=" absolute top-0 left-0 -z-10 w-full"
+                    :lineHeight="score.confTab.lineHeight"></TabRowBg>
+                  <TrackCell v-for="(cell, iii) in track.cells" :key="iii" :rowKey="i" :trackKey="ii" :cellKey="iii">
+                  </TrackCell>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    
+
+    </Paper>
+    <Paper></Paper>
   </div>
+</div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

@@ -6,8 +6,11 @@ export interface PageProvider{
   contentWidth:number,
 }
 
-export interface Test{
-
+export interface Keys{
+    rowKey: number,
+    trackKey: number,
+    cellKey: number,
 }
+
 
   

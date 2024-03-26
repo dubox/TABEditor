@@ -5,15 +5,16 @@ import HtmlEditor from '@/views/HtmlEditor.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/preview',
-      name: 'preview',
-      component: HomeView
-    },
+    
     {
       path: '/',
-      name: 'home',
+      name: '编辑',
       component: HtmlEditor
+    },
+    {
+      path: '/preview',
+      name: '预览',
+      component: HomeView
     },
     // {
     //   path: '/about',

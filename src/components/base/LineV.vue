@@ -5,7 +5,6 @@ const props = defineProps({
   height:{type:Number,default:60},
   lineHeight:{type:Number,default:10},
 });
-
 </script>
 
 <template>

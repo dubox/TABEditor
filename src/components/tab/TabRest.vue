@@ -1,31 +1,19 @@
 <script setup lang="ts">
-//竖线 小节线等
-import TabNoteCell from './TabNoteCell.vue';
+import Dot from '../base/Dot.vue';
+
 const props = defineProps({
-  value:{type:String,default:'1'},
-  onClick:{type:Function,default:(e:MouseEvent)=>{}},
-  lineHeight:{type:Number,default:12},
+  duration:{type:Number,default:4},
+  dot:{type:Number,default:0},
 });
-const lines = ['a','b','c','d','e','f'];
-function onClick(e:MouseEvent){
-  // alert(props.lineName)
-  // props.onClick(e,e.target.dataset,props);
-  // console.log(e,e.target.dataset.data,props)
-}
-//bedeck
 </script>
 
 <template>
-<div class=" tab-note flex justify-center items-center text-xs">
-  <div v-if="value == '1'" class=" font-bold text-sm">━</div>
-  <div v-if="value == 'dot'" class=" font-bold text-sm">·</div>
-  <svg  v-if="value == 'dot2'" width="4" height="4">
-      <circle id="dot" cx="2" cy="2" r="2" stroke="black" stroke-width="0" fill="black"></circle>
-      </svg>
-      <svg v-if="value == 'rest4'" class=" scale-75" width="11" height="28"><path transform="matrix(0.039,0,0,-0.039,1,15.5)" d="m -23,-116 c 0,28 11,42 40,42 33,0 78,-13 119,-31 L 4,53 c -7,9 -10,17 -10,25 0,34 50,66 87,99 25,22 37,52 37,83 0,24 -8,49 -25,69 l -35,42 c -3,3 -4,7 -4,10 0,9 9,15 17,15 4,0 8,-1 11,-5 L 233,211 c 7,-9 10,-17 10,-25 0,-34 -50,-66 -87,-99 -25,-22 -37,-52 -37,-83 0,-24 7,-49 24,-69 l 84,-99 c 3,-3 4,-7 4,-10 0,-9 -8,-16 -16,-16 -4,0 -9,2 -12,6 -18,21 -63,38 -97,38 -41,0 -53,-26 -53,-67 0,-35 11,-74 28,-94 5,-6 0,-13 -6,-13 -2,0 -4,0 -6,2 -45,54 -92,148 -92,202 z" tyle="fill: currentcolor;"></path></svg>
-      <svg v-if="value == 'rest8'" class=" scale-100" width="10" height="19"><path data-v-54505f2c="" transform="matrix(0.039,0,0,-0.039,0,8)" d="M 72,-250 189,76 C 155,64 120,54 84,54 38,54 -3,87 -3,133 c 0,40 33,72 73,72 25,0 48,-15 56,-39 10,-28 6,-59 35,-59 16,0 54,48 61,63 6,12 23,12 28,0 L 127,-250 c -8,-7 -17,-10 -27,-10 -10,0 -20,3 -28,10 z" style="fill: currentcolor;"></path></svg>
-      <svg v-if="value == 'rest16'" class=" scale-75" width="13" height="28"><path transform="matrix(0.039,0,0,-0.039,1,8)" d="m 66,-500 101,327 c -34,-12 -70,-23 -106,-23 -46,0 -87,33 -87,79 0,40 32,72 72,72 25,0 49,-15 57,-39 10,-28 5,-59 34,-59 16,0 55,51 60,68 L 243,76 C 209,64 175,54 139,54 93,54 52,87 52,133 c 0,40 33,72 73,72 25,0 48,-15 56,-39 10,-28 5,-59 34,-59 15,0 50,49 57,63 6,12 23,12 28,0 L 121,-500 c -8,-7 -17,-10 -27,-10 -10,0 -20,3 -28,10 z" style="fill: currentcolor;"></path></svg>
-      <svg v-if="value == 'rest32'" class=" scale-75" width="11" height="28">
+<div class=" flex items-center">
+  
+      <svg v-if="duration <= 4" class=" shrink-0 scale-75" width="11" height="28"><path transform="matrix(0.039,0,0,-0.039,1,15.5)" d="m -23,-116 c 0,28 11,42 40,42 33,0 78,-13 119,-31 L 4,53 c -7,9 -10,17 -10,25 0,34 50,66 87,99 25,22 37,52 37,83 0,24 -8,49 -25,69 l -35,42 c -3,3 -4,7 -4,10 0,9 9,15 17,15 4,0 8,-1 11,-5 L 233,211 c 7,-9 10,-17 10,-25 0,-34 -50,-66 -87,-99 -25,-22 -37,-52 -37,-83 0,-24 7,-49 24,-69 l 84,-99 c 3,-3 4,-7 4,-10 0,-9 -8,-16 -16,-16 -4,0 -9,2 -12,6 -18,21 -63,38 -97,38 -41,0 -53,-26 -53,-67 0,-35 11,-74 28,-94 5,-6 0,-13 -6,-13 -2,0 -4,0 -6,2 -45,54 -92,148 -92,202 z" tyle="fill: currentcolor;"></path></svg>
+      <svg v-if="duration == 8" class=" shrink-0 scale-100" width="10" height="19"><path data-v-54505f2c="" transform="matrix(0.039,0,0,-0.039,0,8)" d="M 72,-250 189,76 C 155,64 120,54 84,54 38,54 -3,87 -3,133 c 0,40 33,72 73,72 25,0 48,-15 56,-39 10,-28 6,-59 35,-59 16,0 54,48 61,63 6,12 23,12 28,0 L 127,-250 c -8,-7 -17,-10 -27,-10 -10,0 -20,3 -28,10 z" style="fill: currentcolor;"></path></svg>
+      <svg v-if="duration == 16" class=" shrink-0 scale-75" width="13" height="28"><path transform="matrix(0.039,0,0,-0.039,1,8)" d="m 66,-500 101,327 c -34,-12 -70,-23 -106,-23 -46,0 -87,33 -87,79 0,40 32,72 72,72 25,0 49,-15 57,-39 10,-28 5,-59 34,-59 16,0 55,51 60,68 L 243,76 C 209,64 175,54 139,54 93,54 52,87 52,133 c 0,40 33,72 73,72 25,0 48,-15 56,-39 10,-28 5,-59 34,-59 15,0 50,49 57,63 6,12 23,12 28,0 L 121,-500 c -8,-7 -17,-10 -27,-10 -10,0 -20,3 -28,10 z" style="fill: currentcolor;"></path></svg>
+      <svg v-if="duration == 32" class=" shrink-0 scale-75" width="11" height="28">
               <g transform="translate(-4.5,15),scale(0.8,0.8)">
                 <g transform="matrix(1.8045484,0,0,1.813574,-950.67414,-140.743307)" style="fill: rgb(0, 0, 0); fill-rule: evenodd; stroke: rgb(0, 0, 0); stroke-width: 0; stroke-linecap: butt; stroke-linejoin: round; stroke-miterlimit: 10;">
                   <g transform="matrix(0.99547219,0,0,0.98660779,528.27135,66.836074)">
@@ -36,6 +24,7 @@ function onClick(e:MouseEvent){
                         <path d="m 531.04322,74.847 c -0.49495,0.098 -0.87377,0.457 -1.04511,0.953 -0.0371,0.16 -0.0371,0.199 -0.0371,0.418 0,0.301 0.0181,0.461 0.15229,0.699 0.1894,0.399 0.58727,0.719 1.04128,0.836 0.47592,0.141 1.27162,0.02 2.18252,-0.297 l 0.22652,-0.082 c 0.18534,-0.164295 0.0273,0.148966 0.0313,0.170463 l -2.97641,8.083325 c 0,0 0.27896,-0.139799 0.33896,-0.0968 0.11136,0.078 0.0973,-0.234868 0.11254,-0.102698 0.22653,1.970468 0.85484,0.390415 0.89196,0.265117 0,-0.039 2.05961,-7.87827 2.70303,-10.12827 l 0.0733,-0.06214 -0.0371,-0.058 c -0.0923,-0.121 -0.28175,-0.16 -0.39787,-0.063 -0.0371,0.039 -0.0961,0.121 -0.13325,0.18 -0.17133,0.301 -0.60631,0.836 -0.83282,1.035 -0.20846,0.18 -0.32363,0.199 -0.51304,0.121 -0.17132,-0.098 -0.22749,-0.199 -0.34264,-0.738 -0.11137,-0.535 -0.24462,-0.778 -0.53112,-0.977 -0.2646,-0.179 -0.60631,-0.238 -0.90707,-0.156 z" style="fill: rgb(0, 0, 0); stroke: rgb(0, 0, 0); stroke-width: 0;"></path></g>
                       </g>
                       </svg>
+      <Dot v-if="dot" :num="dot" ></Dot>
     </div>
   
 </template>
