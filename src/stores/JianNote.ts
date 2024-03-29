@@ -2,7 +2,7 @@
 import Cell from './Cell';
 
 
-export default class TabNote extends Cell{
+export default class JianNote extends Cell{
 
     
 
@@ -38,7 +38,7 @@ export default class TabNote extends Cell{
     }
 
     get noteEl(){
-        return this._noteEl;
+        return this._noteEl?.value;
     }
 
     set noteEl(el){
@@ -46,6 +46,9 @@ export default class TabNote extends Cell{
         this.onElUpdated();
     }
 
+    onElUpdated(){
+        // this.elUpdate ++;// = Date.now();
+    }
 
     get minLine(){
         let keys = <number[]><unknown>Object.keys(this.data.noteHead);

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, provide, computed, reactive, onMounted } from 'vue';
 
-import PageHead from './PageHead.vue';
 import TabRowBg from '../tab/TabRowBg.vue';
 import Chord from '../tab/Chord.vue';
 import JianNote from '../jian/JianNote.vue';
@@ -14,7 +13,7 @@ const model = defineModel();
 import { useScoreStore } from '@/stores/score';
 import Paper from '../Paper.vue';
 const score = useScoreStore();
-score.init();
+// score.init();
 const data = score.data;
 const body = data.body;
 const paper = body.conf.paper;
@@ -27,7 +26,7 @@ function onClick2(e: Event) {
     // state.data.body.rows.splice(0,1);
     // state.data.body.rows = state.data.body.rows.filter((item, i)=>{return i!=0;})
   })
-  console.log(data)
+  console.log(score.cellProxy)
 }
 
 onMounted(() => {
@@ -47,7 +46,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="viewport overflow-scroll self-center h-full w-full" >
+  <div @click="onClick2" class="viewport overflow-scroll self-center h-full w-full" >
   <div class="papers flex flex-col w-fit gap-4 items-center px-2 py-12" :style="`margin:0px auto;`">
     <Paper :width="paper.width" :height="paper.height" :padding-x="paper.paddingX" :padding-y="paper.paddingY">
       

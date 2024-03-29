@@ -1,4 +1,3 @@
-import { useScoreStore } from '@/stores/score';
 import Cell from './Cell';
 
 
@@ -6,7 +5,7 @@ export default class BarLine extends Cell{
 
     
 
-    public duration:number = 4;
+    // public duration:number = 4;
 
     private _noteEl;
 

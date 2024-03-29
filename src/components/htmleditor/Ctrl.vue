@@ -6,7 +6,7 @@ import Group from '../form/Group.vue';
 import { useScoreStore } from '@/stores/score';
 import { useRuntimeStore } from '@/stores/runtime';
 const score = useScoreStore();
-score.init();
+// score.init();
 const RT = useRuntimeStore();
 const paper = score.body.conf.paper;
 const props = defineProps({
@@ -18,7 +18,7 @@ const props = defineProps({
 
 const cell =  computed(()=>{
   
-  let c = score.get(RT.selectedCell.rowKey||0 ,RT.selectedCell.trackKey||0 ,RT.selectedCell.cellKey||0);
+  let c = score.getCellProxy(RT.selectedCell);
   console.log(RT.selectedCell ,c)
   return c;
 });

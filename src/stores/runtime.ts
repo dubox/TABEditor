@@ -1,8 +1,9 @@
 import { ref, computed, reactive } from 'vue'
 import { defineStore } from 'pinia'
+import type { Keys } from '@/common/types';
 
 export const useRuntimeStore = defineStore('runtime', () => {
-  const selectedCell = reactive({
+  const selectedCell = <Keys>reactive({
     
   });
 
@@ -32,10 +33,40 @@ export const useRuntimeStore = defineStore('runtime', () => {
       'note':'音符',
       'rest':'休止符',}
   };
+  const cellTemplates = {
+    tab:{
+      note: {
+        type: 'note',
+        noteHead: {},
+        noteType: 'broken',
+        duration: 4,
+      },
+      barLine: {
+        type: 'barLine',
+      },
+    },
+    jian:{
+      note: {
+        type: 'note',
+        noteHead: '',
+        duration: 4,
+      },
+      barLine: {
+        type: 'barLine',
+      },
+    },
+
+    lyric: {
+      note: {
+        type: 'lyric',
+        lyric: '',
+      },
+    },
+  };
 
   function getTrackType(type: string) {
     return trackTypes[type] || ''
   }
 
-  return { selectedCell,trackTypes,cellTypes,noteTypes,noteFlags,}
+  return { selectedCell,trackTypes,cellTypes,noteTypes,noteFlags,cellTemplates,}
 })

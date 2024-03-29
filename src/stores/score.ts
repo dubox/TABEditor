@@ -4,6 +4,9 @@ import Note from './Note';
 import TabNote from './TabNote';
 import BarLine from './BarLine';
 import { useRuntimeStore } from '@/stores/runtime';
+import Cell from './Cell';
+import JianNote from './JianNote';
+import type { Keys } from '@/common/types';
 
 
 export const useScoreStore = defineStore('score', () => {
@@ -159,10 +162,26 @@ export const useScoreStore = defineStore('score', () => {
   ],
   },
   });
+
   const confTab = computed(() =>  {return data.body.conf.tab;})
   const body = computed(() =>  {return data.body;})
   const rows = computed(() =>  {return data.body.rows;})
   const chords = computed(() =>  {return data.body.conf.chords;})
+  const cellProxy = reactive({});
+  function getCellProxy(row:number|Keys,trackKey:number=null,cellKey:number=null){
+    if(typeof row === 'object')
+      var {rowKey,trackKey,cellKey} = row;
+    else rowKey = row;
+    let key = `${rowKey}-${trackKey}-${cellKey}`;
+    
+    if(cellProxy[key]){
+      return cellProxy[key][0];
+    }
+    let cell = getCellInstance(rowKey,trackKey,cellKey);
+    // let cell = Cell.getInstance(rowKey,trackKey,cellKey);
+    cellProxy[key] = [cell];
+    return cellProxy[key][0];
+  }
   const get = computed(() =>  (rowKey:number|null = null,trackKey:number|null = null,cellKey:number|null = null)=> {
     let res:any = data.body.rows;
     if(rowKey !== null){
@@ -177,30 +196,20 @@ export const useScoreStore = defineStore('score', () => {
     return res;
     
   })
-  function getTrack(rowKey:number,trackKey:number) {
-    return data.body.rows[rowKey][trackKey];
-  }
+  // function getTrack(rowKey:number,trackKey:number) {
+  //   return data.body.rows[rowKey][trackKey];
+  // }
   
-  function getCellInstance(cell,track ,row){
-    switch(cell.type){
-      case 'note':
-        return new TabNote(cell,track ,row);
-      case 'barLine':
-        return new BarLine(cell,track ,row);
+  function getCellInstance(rowKey,trackKey,cellKey){
+    let keys = [rowKey,trackKey,cellKey];
+    switch(get.value(rowKey,trackKey).type+'.'+get.value(...keys).type){
+      case 'tab.note': return new TabNote(...keys);
+      case 'tab.barLine': return new BarLine(...keys);
+      case 'jian.note': return new JianNote(...keys);
     }
+    return new TabNote(rowKey,trackKey,cellKey);
   }
 
-  function init(){
-    // data.body.rows[0][0].cells = data.body.rows[0][0].cells.map(cell=>new Note(cell));
-    data.body.rows.forEach(function(row, i) {
-      row.forEach(function(track, ii) {
-        track.cells.forEach(function(cell, iii) {
-          track.cells[iii] = getCellInstance(cell,track ,row);
-        });
-      });
-    });
-    console.log('init')
-  }
 
   function conf(type:string = ''){
     if(type)
@@ -209,7 +218,9 @@ export const useScoreStore = defineStore('score', () => {
   }
 
   function pushCell(type,rowKey:number|null = null,trackKey:number|null = null,cellKey:number|null = null){
-    get.value(rowKey ,trackKey).cells.splice(cellKey+1,0,getCellInstance({type:type} ,get.value(rowKey,trackKey),get.value(rowKey)));
+    let track = get.value(rowKey,trackKey);
+    let cell = JSON.parse(JSON.stringify(RT.cellTemplates[track.type][type]));
+    track.cells.splice(cellKey+1,0,cell);
     RT.selectedCell = {rowKey ,trackKey ,cellKey:cellKey+1};
   }
 
@@ -219,5 +230,5 @@ export const useScoreStore = defineStore('score', () => {
 
   
 
-  return { data,body,chords,rows, confTab, getTrack ,get,init ,pushCell,unshiftCell }
+  return { data,body,chords,rows, confTab ,getCellProxy,cellProxy,get ,pushCell,unshiftCell }
 })

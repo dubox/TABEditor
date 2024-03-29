@@ -12,7 +12,7 @@ import TrackCell from '../base/TrackCell.vue';
 import Arc from '../base/Arc.vue';
 import { useScoreStore } from '@/stores/score';
 const score = useScoreStore();
-import { ref, type PropType, computed, watch, watchEffect, reactive, onMounted, onUpdated, inject, provide } from 'vue';
+import { ref, type PropType, computed, watch, watchEffect, reactive, onMounted, onUpdated, inject, provide, type Ref } from 'vue';
 import TabRest from './TabRest.vue';
 import type Note from '@/stores/Note';
 import type { Keys } from '@/common/types';
@@ -24,14 +24,10 @@ const props = defineProps({
   onClick: { type: Function, default: (e: MouseEvent) => { } },
   lineHeight: { type: Number, default: 12 },
   growNshrink: { type: Boolean, default: false },
-  //   rowKey: { type: Number, default: -1 },
-  //   trackKey: { type: Number, default: -1 },
-  // cellKey: { type: Number, default: -1 },
-  // cell: { type: Object,  },
 });
 provide('lineHeight', ref(props.lineHeight));
 const keys = <Keys>inject('keys');
-const cell = computed(() => score.get(keys.rowKey, keys.trackKey, keys.cellKey));
+const cell = computed(() => score.getCellProxy(keys));
 
 
 function onClick(e: MouseEvent) {
@@ -47,15 +43,10 @@ const stemHeight = computed(() => {
     return h - props.lineHeight * cellV.maxLine
   return h - props.lineHeight * cellV.minLine
 
-  for (let i in cellV.noteHead) {
-    if (cellV.noteHead[i] == '') h -= props.lineHeight;
-    else break;
-  }
-  return h;
-}); console.log(stemHeight.value)
+});
 
 const el = ref();
-cell.value.noteEl = el;
+// cell.value.noteEl = el;
 
 // const showTabBg = computed(() => {
 //   const  cellV = cell.value;
@@ -73,17 +64,18 @@ const style2 = computed(() => {
   const cellV = cell.value;
   return `width: min(20%, (100% - ${cellV.noteHeadWidth || 0}px));`;
 });
-onUpdated(() => {console.log('onUpdated',el.value?.offsetLeft)
+onUpdated(() => {
   cell.value.noteEl = el;
 });
 onMounted(() => {
+  cell.value.noteEl = el;
 });
 
 
 const slur = computed(() =>{
   const cellV = cell.value;
   for (let i in cellV.slur) {
-    let cellRight = score.get(keys.rowKey, keys.trackKey, keys.cellKey + parseInt(cellV.slur[i].right || 0));
+    let cellRight = score.getCellProxy(keys.rowKey, keys.trackKey, keys.cellKey + parseInt(cellV.slur[i].right || 0));
     cellV.slur[i].width = cellRight?.noteHeadOffsetLeft - cellV.noteHeadOffsetLeft;
   }
   return cellV.slur;

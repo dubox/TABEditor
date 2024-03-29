@@ -6,7 +6,7 @@ import TabBarLine from '../tab/TabBarLine.vue';
 // const $this = getCurrentInstance();
 // const parentEl = $this?.parent?.vnode.el;//computed((old)=>{return $this?.parent?.vnode.el;});
 // const defaultWidth = parentEl.innerHeight;
-console.log(getCurrentInstance())
+// console.log(getCurrentInstance())
 const props = defineProps({
   width:{type:String,default:'100%'},
   lineHeight:{type:Number,default:12},

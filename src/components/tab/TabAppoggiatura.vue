@@ -15,7 +15,7 @@ const props = defineProps({
 
 const keys = <Keys>inject('keys');
 const lineHeight = <Ref>inject('lineHeight');
-const cell = computed(() => score.get(keys.rowKey, keys.trackKey, keys.cellKey));
+const cell = computed(() => score.getCellProxy(keys));
 
 const top = computed(() => {
   const appoggiaturas = cell.value.appoggiatura;

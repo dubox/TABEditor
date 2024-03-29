@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, inject, onUpdated, reactive } from 'vue';
+import { computed , inject, onUpdated, reactive, type Ref } from 'vue';
 import LineH from '../base/LineH.vue';
 import Dot from '../base/Dot.vue';
 import TabNoteVCenter from './TabNoteVCenter.vue';
@@ -13,17 +13,17 @@ const props = defineProps({
   duration: { type: Number, default: 4 },//时值
 });
 const keys = <Keys>inject('keys');
-const cell =  computed(()=>score.get(keys.rowKey ,keys.trackKey ,keys.cellKey));//computed(()=><Note><unknown>(rows[keys.rowKey][keys.trackKey].cells[keys.cellKey]));
+const cell =  computed(()=>score.getCellProxy(keys));
   
 const width = computed(() => {
-  let cellV = cell.value;console.log('width',cellV?.cellWidth,cellV.noteHeadOffsetLeft);
+  let cellV = cell.value;
   if(props.type == 'center')return cellV?.cellWidth+1;
   if(props.type == 'left')return cellV?.noteHeadWidth/2 + (cellV.noteHeadOffsetLeft - cellV.offsetLeft) + 1;
   if(props.type == 'right')return cellV?.cellWidth - cellV?.noteHeadWidth/2 - (cellV.noteHeadOffsetLeft - cellV.offsetLeft);
   return 0;
 });
 const style1 = computed(()=>{
-  let cellV = cell.value;console.log('style1',cell.value.noteHeadOffsetLeft,cellV?.cellWidth)
+  let cellV = cell.value;
   if(props.type == 'right')return `left:50%`;
   return `left:${ - (cellV.noteHeadOffsetLeft - cellV.offsetLeft)-1}px`;
 });
@@ -44,6 +44,13 @@ onUpdated(()=>{
   // console.log('flag',cell.dot)
   //  cell.dot = (<Note>inject('cell')).dot;console.log('flag',cell.dot)
 })
+// function computed(c){
+  
+//   return _computed(()=>{
+//     updNeedle.value;
+//     return c();
+//   });
+// }
 </script>
 
 <template>

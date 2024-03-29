@@ -11,7 +11,7 @@ const score = useScoreStore();
 // const props = defineProps({
 // });
 const keys = <Keys>inject('keys');
-const cell = computed(()=>score.get(keys.rowKey ,keys.trackKey ,keys.cellKey));
+const cell = computed(()=>score.getCellProxy(keys));
 
 
 const width = computed(()=>{

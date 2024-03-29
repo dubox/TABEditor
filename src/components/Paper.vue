@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, provide, computed } from 'vue';
 import { useRuntimeStore } from '@/stores/runtime';
+import type { Keys } from '@/common/types';
 const RT = useRuntimeStore();
 const props = defineProps({
   paddingX: { type: Number, default: 20 },//左右边距
@@ -10,7 +11,7 @@ const props = defineProps({
 });
 
 function onSelfClick() {
-  RT.selectedCell = {};
+  RT.selectedCell = <Keys>{};
 }
 </script>
 

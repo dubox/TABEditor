@@ -8,6 +8,7 @@ import LyricNote from '../lyric/LyricNote.vue';
 import { useScoreStore } from '@/stores/score';
 import type Note from '@/stores/Note';
 import { useRuntimeStore } from '@/stores/runtime';
+import type { Keys } from '@/common/types';
 const score = useScoreStore();
 const RT = useRuntimeStore();
 // const resizeObserver = new ResizeObserver((entries) => {console.log('resizeObserver',entries)});
@@ -17,18 +18,18 @@ const props = defineProps({
   trackKey: { type: Number, default: -1 },
   cellKey: { type: Number, default: -1 },
 });
+
 provide('keys', props);
-const keys = props;
+const keys = <Keys>props;
 
-
-// const track = score.getTrack(props.rowKey,props.trackKey);
-const cell =  computed(()=>score.get(props.rowKey ,props.trackKey ,props.cellKey));//computed(()=><Note><unknown>(rows[props.rowKey][props.trackKey].cells[props.cellKey]));
   
+// const track = score.getTrack(props.rowKey,props.trackKey);
+const cell =  computed(()=>score.getCellProxy(keys));
   // if(props.cellKey == 0)
   // console.log(cell,props.rowKey, props.trackKey , props.cellKey,cell)
 
   const el = ref();
-cell.value.cellEl = el;
+// cell.value.cellEl = el;
 
 
 const width = computed(()=>{
@@ -38,7 +39,7 @@ const width = computed(()=>{
   let dot = cellV.dot || 0;
   if(dot && duration>=4)//大于4分音符的音符、休止符，不加附点 // && cellV.noteType!='rest'
     for(let i = dot;i>0;i--)d += 1/(duration * Math.pow(2,i));
-  cellV.realDuration = d;
+  // cellV.realDuration = d || 0;
   return 128*2 * d;
 });
 const style1 = computed(()=>{
@@ -50,9 +51,10 @@ const style1 = computed(()=>{
   return s;
 });
 onMounted(() => {
+  cell.value.cellEl=el;
 });
 onUpdated(() => {
-  cell.value.cellEl=el
+  cell.value.cellEl=el;
 });
 
 const selected = computed(()=>RT.selectedCell.rowKey == keys.rowKey && RT.selectedCell.trackKey == keys.trackKey && RT.selectedCell.cellKey == keys.cellKey);
